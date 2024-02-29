@@ -3,7 +3,7 @@ services:
   db:
     image: mongo:latest
     volumes:
-      - ./data/db:/data/db
+      - mongo_data:/data/db
     ports:
       - 27017:27017
   redis:
@@ -19,3 +19,6 @@ services:
     depends_on:
       - db
       - redis
+
+volumes:
+  mongo_data:
