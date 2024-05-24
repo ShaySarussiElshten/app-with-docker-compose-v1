@@ -5,24 +5,7 @@ const connectToMongo = require('./db');
 const app = express();
 app.use(express.json());
 
-// Create Redis client
-const redisClient = redis.createClient({
-    socket: {
-      host: 'redis',
-      port: 6379
-    }
-  });
 
-  // Connect to Redis
-async function connectToRedis() {
-    await redisClient.connect();
-  }
-  
-connectToRedis().then(() => {
-    console.log('Connected to Redis');
-  }).catch(err => {
-    console.error('Redis connection error:', err);
-});
 
 // Middleware to ensure MongoDB connection is ready
 async function mongoMiddleware(req, res, next) {
@@ -48,19 +31,6 @@ app.post('/add-to-mongo', mongoMiddleware, async (req, res) => {
   }
 });
 
-app.post('/add-to-redis', async (req, res) => {
-    const { key, value } = req.body;
-    try {
-        // Use the set command as per the new Redis client API
-        await redisClient.set(key, JSON.stringify(value), {
-            EX: 3600,
-        });
-        res.status(200).send('Data added to Redis successfully.');
-    } catch (err) {
-        console.error('Error adding data to Redis:', err);
-        res.status(500).send('Error adding data to Redis.');
-    }
-});
 
 
 const PORT = process.env.PORT || 5000;

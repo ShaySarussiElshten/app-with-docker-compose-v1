@@ -6,10 +6,6 @@ services:
       - mongo_data:/data/db
     ports:
       - 27017:27017
-  redis:
-    image: redis:latest
-    ports:
-      - 6379:6379
   app:
     build:
       context: .
@@ -18,7 +14,6 @@ services:
       - 5000:5000
     depends_on:
       - db
-      - redis
 
 volumes:
   mongo_data:
