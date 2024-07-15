@@ -1,15 +1,13 @@
+FROM node:latest
 
-# https://hub.docker.com/_/node
-FROM node:16
+WORKDIR /app
 
-# Create and change to the app directory.
-WORKDIR /usr/src/app
+COPY package*.json ./
 
-# Copy local code to the container image.
-COPY . .
-
-# Install production dependencies.
 RUN npm install
 
-# Adjust this line to correctly reference the location of server.js
-CMD [ "node", "src/server.js" ]
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "src/server.js"]
